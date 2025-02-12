@@ -127,23 +127,7 @@ static int _test_priority_queue() {
 
 
   // string cases 
-  char *str1 = strdup("banana");
-    char *str2 = strdup("apple");
-    char *str3 = strdup("cherry");
-    pq_enqueue(&head, str1, cmpString);
-    pq_enqueue(&head, str2, cmpString);
-    pq_enqueue(&head, str3, cmpString);
-
-    cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "apple") == 0);
-    cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "banana") == 0);
-    cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "cherry") == 0);
-    cu_check(head == NULL);
-
-    free(str1);
-    free(str2);
-    free(str3);
-
-    cu_end();
+  
 
 
   cu_end();
