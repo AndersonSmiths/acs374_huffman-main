@@ -19,8 +19,8 @@ bool calc_frequencies(Frequencies freqs, const char *path, const char **a_error)
 }
 
 
-/*This is a helper function to make_huffman_tree
-too pass into the comparison parameter*/
+/*helper function to make_huffman_tree
+to pass into the comparison parameter*/
 int compareNodes(const void *a, const void *b)
 {
     const TreeNode *one = (const TreeNode *)a;
@@ -112,9 +112,66 @@ void destroy_huffman_tree(TreeNode **a_root)
 // TODO: Task 2
 void write_coding_table(TreeNode *root, BitWriter *a_writer)
 {
+    // case 
+    if(root == NULL) {
+        return;
+    }
+
+    // post order traversal
+    write_coding_table(root->left, a_writer);
+    write_coding_table(root->right, a_writer);
+
+    if (root->left == NULL && root->right == NULL) {
+        write_bits(a_writer, 1, 1);
+        write_bits(a_writer, root->character, 8);
+    } else {
+        write_bits(a_writer, 0, 1);
+    }
+
 }
 
-// TODO: Task 2
-void write_compressed(BitWriter *a_writer, uint8_t *uncompressed_bytes, TreeNode *root)
-{
+
+// Helper function to generate Huffman encoding table
+void huffmanTableCreator(TreeNode *node, uint8_t path[], int d, uint8_t table[256][256], int pathLengths[256]) {
+    
+    // case handling
+    if (!node) return;
+
+    // store path if leaf node
+    if (!node->left && !node->right) {
+        memcpy(table[node->character], path, d);
+        pathLengths[node->character] = d;
+        return;
+    }
+
+    // left and right traversal
+    path[d] = 0;
+    huffmanTableCreator(node->left, path, d + 1, table, pathLengths);
+    path[d] = 1;
+    huffmanTableCreator(node->right, path, d + 1, table, pathLengths);
+}
+
+
+void write_compressed(BitWriter *a_writer, uint8_t *uncompressed_bytes, TreeNode *root) {
+   
+    if (!a_writer || !root || !uncompressed_bytes) {
+        return;
+    }
+
+    // encoding table and storing bit seq
+    uint8_t huffman_table[256][256] = {0}; 
+    int pathLengths[256] = {0}; 
+    uint8_t path[256] = {0}; 
+    huffmanTableCreator(root, path, 0, huffman_table, pathLengths);
+
+    // encoding/writing
+    for (uint8_t *currByte = uncompressed_bytes; *currByte != '\0'; currByte++) {
+        uint8_t *bitSeq = huffman_table[*currByte];
+        int bitLength = pathLengths[*currByte];
+
+        // iteration for bit sequence writing
+        for (int i = 0; i < bitLength; i++) {
+            write_bits(a_writer, bitSeq[i], 1);
+        }
+    }
 }

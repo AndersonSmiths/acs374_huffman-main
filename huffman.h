@@ -46,6 +46,24 @@ typedef struct _TreeNode
   struct _TreeNode *right;
 } TreeNode;
 
+
+/**
+ * helper function that builds huffman encoding table
+ * @param node 
+ * @param path 
+ * @param depth 
+ * @param table 
+ * @param path_lengths 
+ */ 
+void huffmanTableCreator(TreeNode *node, uint8_t path[], int depth, uint8_t table[256][256], int path_lengths[256]);
+
+
+
+/**
+ * Helper function for make_huffman_tree
+ */
+int compareNodes(const void *a, const void *b);
+
 /**
  * Constructs a Huffman tree from the character frequencies in `freq`.
  *
@@ -62,6 +80,9 @@ TreeNode *make_huffman_tree(Frequencies freq);
  * set `a_root` to NULL after freeing all memory associated with the tree.
  */
 void destroy_huffman_tree(TreeNode **a_root);
+
+
+
 
 /**
  * @brief Write the coding table represented in the Huffman tree to the file
