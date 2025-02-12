@@ -55,15 +55,15 @@ static int _test_simple_stack()
   // -------------------------------
   PQNode *stack = NULL;
   int n1 = 5, n2 = 7, n3 = 6;
-  stack_push(testStack, &n1);
-  stack_push(testStack, &n2);
-  stack_push(testStack, &n3);
+  stack_push(stack, &n1);
+  stack_push(stack, &n2);
+  stack_push(stack, &n3);
   cu_check(stack != NULL);
-  PQNode *first_node = stack_pop(testStack);
+  PQNode *first_node = stack_pop(stack);
   cu_check(*((int *)first_node->a_value) == 6);
-  PQNode *second_node = stack_pop(testStack);
+  PQNode *second_node = stack_pop(stack);
   cu_check(*((int *)second_node->a_value) == 7);
-  PQNode *third_node = stack_pop(testStack);
+  PQNode *third_node = stack_pop(stack);
   cu_check(*((int *)third_node->a_value) == 5);
   cu_check(stack == NULL);
   free(first_node);
@@ -71,8 +71,28 @@ static int _test_simple_stack()
   free(third_node);
   // -------------------------------
 
-  // empty case
+  // ----cases I added------
+  PQNode *testStack = NULL;
+  // the names of my cat, chihuaha, and goldendoodle
+  int louis = 5, chewey = 7, willow = 6;
+  stack_push(testStack, &louis);
+  stack_push(testStack, &chewey);
+  stack_push(testStack, &willow);
+
+  cu_check(testStack != NULL);
+  cu_check(*((int *)stack_pop(testStack)->a_value) == 6);
+  cu_check(*((int *)stack_pop(testStack)->a_value) == 7);
+  cu_check(*((int *)stack_pop(testStack)->a_value) == 5);
+  cu_check(testStack == NULL);
+
+  //null case
+  stack_push(testStack, NULL);
   cu_check(stack_pop(testStack) == NULL);
+
+  cu_end();
+
+  // empty case
+  cu_check(stack_pop(stack) == NULL);
 
   cu_end();
 }
@@ -127,36 +147,26 @@ static int _test_priority_queue() {
 
 
   // string cases 
-  
+  char *str1 = strdup("peter");
+  char *str2 = strdup("familyguy");
+  char *str3 = strdup("meg");
+  pq_enqueue(&head, str1, _cmp_string);
+  pq_enqueue(&head, str2, _cmp_string);
+  pq_enqueue(&head, str3, _cmp_string);
+
+  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "familyguy") == 0);
+  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "peter") == 0);
+  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "meg") == 0);
+  cu_check(head == NULL);
+
+  free(str1);
+  free(str2);
+  free(str3);
 
 
   cu_end();
 }
 
-
-static int testStack() {
-  cu_start();
-
-  
-  PQNode *testStack = NULL;
-  // the names of my cat, chihuaha, and goldendoodle
-  int louis = 5, chewey = 7, willow = 6;
-  stack_push(testStack, &louis);
-  stack_push(testStack, &chewey);
-  stack_push(testStack, &willow);
-
-  cu_check(testStack != NULL);
-  cu_check(*((int *)stack_pop(testStack)->a_value) == 6);
-  cu_check(*((int *)stack_pop(testStack)->a_value) == 7);
-  cu_check(*((int *)stack_pop(testStack)->a_value) == 5);
-  cu_check(testStack == NULL);
-
-  //null case
-  stack_push(testStack, NULL);
-  cu_check(stack_pop(testStack) == NULL);
-
-  cu_end();
-}
 
 
 int main(int argc, char *argv[])
