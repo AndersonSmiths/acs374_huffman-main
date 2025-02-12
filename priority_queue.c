@@ -19,7 +19,7 @@ PQNode *pq_enqueue(PQNode **a_head, void *a_value, int (*cmp_fn)(const void *, c
     
 
     //first node where new value has equal or higher priority
-    while (currnode != NULL && cmp_fn(a_value, currnode->a_value) > 0) {
+    while (currnode != NULL && cmp_fn(a_value, currnode->a_value) < 0) {
         prevnode = currnode;
         currnode = currnode->next;
     }

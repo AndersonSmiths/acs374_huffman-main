@@ -14,6 +14,12 @@ static void _print_int(void *a_n)
   printf("%d", n);
 }
 
+static int _cmp_string(const void *a, const void *b)
+{
+  return strcmp((const char *)a, (const char *)b);
+}
+
+
 static int _test_simple_pq()
 {
   cu_start();
@@ -35,6 +41,11 @@ static int _test_simple_pq()
   free(second_node);
   free(third_node);
   // -------------------------------
+
+
+  // empty case
+  cu_check(pq_dequeue(&head) == NULL);
+
   cu_end();
 }
 
@@ -59,14 +70,41 @@ static int _test_simple_stack()
   free(second_node);
   free(third_node);
   // -------------------------------
+
+  // empty case
+  cu_check(stack_pop(&stack) == NULL);
+
   cu_end();
 }
+
+
+static int _test_string_case()
+{
+  cu_start();
+  // -------------------------------
+  PQNode *head = NULL;
+  char *anderson = "anderson";
+  char *conner = "conner";
+  char *smith = "smith";
+  pq_enqueue(&head, anderson, _cmp_string);
+  pq_enqueue(&head, conner, _cmp_string);
+  pq_enqueue(&head, smith, _cmp_string);
+  
+  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "anderson") == 0);
+  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "conner") == 0);
+  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "smith") == 0);
+  cu_check(head == NULL);
+  // -------------------------------
+  cu_end();
+}
+
 
 int main(int argc, char *argv[])
 {
   cu_start_tests();
   cu_run(_test_simple_pq);
   cu_run(_test_simple_stack);
+  cu_run(_test_string_case);
   cu_end_tests();
   return EXIT_SUCCESS;
 }
