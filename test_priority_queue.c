@@ -1,5 +1,7 @@
 #include "priority_queue.h"
 #include "cu_unit.h"
+#include <string.h>
+
 
 static int _cmp_int(const void *a, const void *b)
 {
@@ -43,8 +45,6 @@ static int _test_simple_pq()
   // -------------------------------
 
 
-  // empty case
-  cu_check(pq_dequeue(&head) == NULL);
 
   cu_end();
 }
@@ -77,26 +77,75 @@ static int _test_simple_stack()
   cu_end();
 }
 
-
-static int _test_string_case()
-{
+static int _test_priority_queue() {
   cu_start();
-  // -------------------------------
-  PQNode *head = NULL;
-  char *anderson = "anderson";
-  char *conner = "conner";
-  char *smith = "smith";
-  pq_enqueue(&head, anderson, _cmp_string);
-  pq_enqueue(&head, conner, _cmp_string);
-  pq_enqueue(&head, smith, _cmp_string);
-  
-  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "anderson") == 0);
-  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "conner") == 0);
-  cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "smith") == 0);
+
+
+    PQNode *head = NULL;
+    int anderson = 5, conner = 7, smith = 6;
+    pq_enqueue(&head, &anderson, _cmp_int);
+    pq_enqueue(&head, &conner, _cmp_int);
+    pq_enqueue(&head, &smith, _cmp_int);
+
+    cu_check(head != NULL);
+    cu_check(*((int *)pq_dequeue(&head)->a_value) == 5);
+    cu_check(*((int *)pq_dequeue(&head)->a_value) == 6);
+    cu_check(*((int *)pq_dequeue(&head)->a_value) == 7);
+    cu_check(head == NULL);
+
+
+  // repeating cases
+  int fozzie = 29, lilly = 29, wally = 29;
+  pq_enqueue(&head, &fozzie, _cmp_int);
+  pq_enqueue(&head, &lilly, _cmp_int);
+  pq_enqueue(&head, &wally, _cmp_int);
+
+  // 29 bc its my fav number :D 
+  cu_check(*((int *)pq_dequeue(&head)->a_value) == 29);
+  cu_check(*((int *)pq_dequeue(&head)->a_value) == 29);
+  cu_check(*((int *)pq_dequeue(&head)->a_value) == 29);
   cu_check(head == NULL);
-  // -------------------------------
+
+  // tie case TODO: figure out whether or not the prompt 
+  // says that it is supposed to be done a certain way
+  int reggie = 29, myrtle = 29;
+  pq_enqueue(&head, &reggie, _cmp_int);
+  pq_enqueue(&head, &myrtle, _cmp_int);
+  cu_check(*((int *)pq_dequeue(&head)->a_value) == 29);
+  cu_check(*((int *)pq_dequeue(&head)->a_value) == 29);
+  cu_check(head == NULL);
+
+  /// empty case 
+  PQNode *head2 = NULL;
+  cu_check(pq_dequeue(&head) == NULL);
+
+
+  pq_enqueue(&head2, NULL, _cmp_int);
+  cu_check(pq_dequeue(&head) == NULL);
+
   cu_end();
 }
+
+
+// static int _test_string_case()
+// {
+//   cu_start();
+//   // -------------------------------
+//   PQNode *head = NULL;
+//   char *anderson = "anderson";
+//   char *conner = "conner";
+//   char *smith = "smith";
+//   pq_enqueue(&head, anderson, _cmp_string);
+//   pq_enqueue(&head, conner, _cmp_string);
+//   pq_enqueue(&head, smith, _cmp_string);
+  
+//   cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "anderson") == 0);
+//   cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "conner") == 0);
+//   cu_check(strcmp((char *)pq_dequeue(&head)->a_value, "smith") == 0);
+//   cu_check(head == NULL);
+//   // -------------------------------
+//   cu_end();
+// }
 
 
 int main(int argc, char *argv[])
@@ -104,7 +153,7 @@ int main(int argc, char *argv[])
   cu_start_tests();
   cu_run(_test_simple_pq);
   cu_run(_test_simple_stack);
-  cu_run(_test_string_case);
+  cu_run(_test_priority_queue);
   cu_end_tests();
-  return EXIT_SUCCESS;
+  return EXIT_SUCCESS; 
 }

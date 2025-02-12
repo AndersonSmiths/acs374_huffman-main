@@ -1,6 +1,6 @@
 #include "priority_queue.h"
 
-// TODO: Task 0
+// Task 0
 PQNode *pq_enqueue(PQNode **a_head, void *a_value, int (*cmp_fn)(const void *, const void *))
 {
     // empty case
@@ -19,7 +19,7 @@ PQNode *pq_enqueue(PQNode **a_head, void *a_value, int (*cmp_fn)(const void *, c
     
 
     //first node where new value has equal or higher priority
-    while (currnode != NULL && cmp_fn(a_value, currnode->a_value) < 0) {
+    while (currnode != NULL && cmp_fn(a_value, currnode->a_value) > 0) {
         prevnode = currnode;
         currnode = currnode->next;
     }
@@ -36,7 +36,7 @@ PQNode *pq_enqueue(PQNode **a_head, void *a_value, int (*cmp_fn)(const void *, c
 
 }
 
-// TODO: Task 0
+// Task 0
 PQNode *pq_dequeue(PQNode **a_head)
 {
     // if head or ptr to head is null, return null
@@ -55,7 +55,7 @@ PQNode *pq_dequeue(PQNode **a_head)
 
 }
 
-// TODO: Task 0
+// Task 0
 PQNode *stack_push(PQNode **stack, void *a_value)
 {
     // null case handling
@@ -75,7 +75,7 @@ PQNode *stack_push(PQNode **stack, void *a_value)
     return pushNode;
 }
 
-// TODO: Task 0
+// Task 0
 PQNode *stack_pop(PQNode **stack) {
     if (stack == NULL || *stack == NULL) {
         return NULL;
@@ -89,7 +89,7 @@ PQNode *stack_pop(PQNode **stack) {
 }
 
 
-// TODO: Task 0
+// Task 0
 void destroy_list(PQNode **a_head, void (*destroy_fn)(void *))
 {
     if (a_head == NULL || *a_head == NULL) {

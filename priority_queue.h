@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <stdint.h>
 
+
 /**
  * A struct representing a node in a priority queue. Each node has a value and a
  * pointer to the next node in the queue.
