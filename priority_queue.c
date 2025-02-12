@@ -73,8 +73,6 @@ PQNode *stack_push(PQNode **stack, void *a_value)
     *stack = pushNode;
 
     return pushNode;
-
-
 }
 
 // TODO: Task 0

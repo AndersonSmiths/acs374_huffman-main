@@ -91,6 +91,22 @@ TreeNode *make_huffman_tree(Frequencies freq)
 // TODO: Task 1
 void destroy_huffman_tree(TreeNode **a_root)
 {
+
+    // base case
+    if (a_root == NULL || *a_root == NULL){
+        return;
+    }
+
+    TreeNode *root = *a_root;
+    
+    // recursive destruction
+    destroy_huffman_tree(&(root->left));
+    destroy_huffman_tree(&(root->right));
+    
+    // memory freeing
+    free(root);
+    *a_root = NULL;
+
 }
 
 // TODO: Task 2
