@@ -85,6 +85,25 @@ static int _test_huffman_tree_cornell()
   cu_end();
 }
 
+
+// tests for memmory safety
+static int _test_destroy_huffman_tree()
+{
+  cu_start();
+  Frequencies freq = {0};
+  const char *loisgriffin = NULL;
+  cu_check(calc_frequencies(freq, "tests/cornell.txt", &loisgriffin));
+
+  TreeNode *root = make_huffman_tree(freq);
+  destroy_huffman_tree(&root);
+  
+  // root should be NULL
+  cu_check(root == NULL);
+
+  // -------------------------------
+  cu_end();
+}
+
 static int _test_huffman_tree_gophers()
 {
   cu_start();
@@ -123,6 +142,7 @@ int main(int argc, char *argv[])
   cu_run(_test_huffman_tree_cornell);
   cu_run(_test_huffman_tree_gophers);
   cu_run(_test_huffman_tree_ex);
+  cu_run(_test_destroy_huffman_tree);
   cu_end_tests();
   return 0;
 }
